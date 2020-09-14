@@ -4,15 +4,18 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SuperUser
 {
     public function handle(Request $request, Closure $next)
     {
-        if (auth()->user()->role == "superuser") {
-            return $next($request);
+        if (Auth::check()) {
+            if (Auth::user()->role == "superuser") {
+                return $next($request);
+            }
         }
 
-        return redirect()->route('superuserDashboard')->with('error', "Only super user can access!");
+        return redirect()->route('dashboardRedirect')->with('error', "Only superuser can access!");
     }
 }

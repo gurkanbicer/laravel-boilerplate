@@ -22,7 +22,7 @@ class AccountController extends Controller
 
     public function ownAccountDetails(Request $request)
     {
-        return view('dashboard.account-details');
+        return view('dashboard.common.account-details');
     }
 
     public function updateOwnAccountDetails(UpdateOwnAccountDetails $request)

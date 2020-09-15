@@ -19,12 +19,7 @@
             <form class="form-inline mr-auto">
                 <ul class="navbar-nav mr-3">
                     <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg"><i class="fas fa-bars"></i></a></li>
-                    <li><a href="#" data-toggle="search" class="nav-link nav-link-lg d-sm-none"><i class="fas fa-search"></i></a></li>
                 </ul>
-                <div class="search-element">
-                    <input class="form-control" type="search" placeholder="{{ __('Search') }}" aria-label="Search" data-width="250">
-                    <button class="btn" type="submit"><i class="fas fa-search"></i></button>
-                </div>
             </form>
             <ul class="navbar-nav navbar-right">
                 <li class="dropdown">
@@ -78,10 +73,15 @@
                     <a href="{{ route('dashboardRedirect') }}"><i class="fab fa-laravel text-primary mt-3" style="font-size: 32px;"></i></a>
                 </div>
                 <ul class="sidebar-menu">
-                    <li class="menu-header">{{ __('Dashboard') }}</li>
-                    <li class="nav-item">
-                        <a href="{{ route('dashboardRedirect') }}"><i class="fas fa-columns"></i><span>{{ __('Getting started') }}</span></a>
+                    <li class="menu-header">{{ __('Menu') }}</li>
+                    <li class="nav-item @if (\Route::is('adminIndex')) active @endif ">
+                        <a href="{{ route('dashboardRedirect') }}"><i class="fas fa-columns"></i><span>{{ __('Dashboard') }}</span></a>
                     </li>
+                    @if(isAuthRoleAdmin())
+                        <li class="nav-item @if (\Route::is('adminListUsers')) active @endif ">
+                            <a href="{{ route('adminListUsers') }}"><i class="fas fa-users"></i><span>{{ __('Users') }}</span></a>
+                        </li>
+                    @endif
                     @yield('sidebar')
                 </ul>
                 <div class="mt-4 mb-4 p-3 hide-sidebar-mini">

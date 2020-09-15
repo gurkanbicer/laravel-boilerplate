@@ -48,6 +48,14 @@ Route::prefix($roleAdminUriPrefix)->group(function() {
     Route::post('account-details/profile-image/upload', [
         App\Http\Controllers\Common\UploadController::class, 'uploadOwnAccountProfileImage'
     ])->name('adminOwnAccountProfileImageUpload');
+
+    Route::get('users', [
+        App\Http\Controllers\Admin\UserController::class, 'listUsers'
+    ])->name('adminListUsers');
+
+    Route::get('user/{id}', [
+        App\Http\Controllers\Admin\UserController::class, 'getUser'
+    ])->name('adminGetUser');
 });
 
 ### superuser

@@ -1,5 +1,7 @@
 @extends('layouts.dashboard-auth')
-
+@section('headerStyles')
+    <link href="{{ asset('/assets/stisla/vendor/izitoast/dist/css/iziToast.min.css') }}" rel="stylesheet">
+@endsection
 @section('content')
     <section class="section">
         <div class="container mt-5">
@@ -7,8 +9,7 @@
                 <div
                     class="col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-8 offset-lg-2 col-xl-8 offset-xl-2">
                     <div class="login-brand">
-                        <img src="/assets/stisla/img/stisla-fill.svg" alt="logo" width="100"
-                             class="shadow-light rounded-circle">
+                        <i class="fab fa-laravel text-primary" style="font-size: 64px"></i>
                     </div>
                     <div class="card card-primary">
                         <div class="card-header">
@@ -83,11 +84,15 @@
                                         {{ __('Register') }}
                                     </button>
                                 </div>
+                                <div class="form-divider"></div>
+                                <div class="form-group">
+                                    <a class="btn btn-info" href="{{ route('login') }}">Login</a>
+                                </div>
                             </form>
                         </div>
                     </div>
                     <div class="simple-footer">
-                        Copyright &copy; {{ \Carbon\Carbon::now()->format('Y') }} - {{ env('APP_NAME') }}
+                        Copyright &copy; {{ \Carbon\Carbon::now()->format('Y') }} - <span class="text-primary font-weight-bold">{{ env('APP_NAME') }}</span>
                     </div>
                 </div>
             </div>
@@ -98,4 +103,16 @@
     <script src="{{ asset('/assets/stisla/vendor/jquery-pwstrength/jquery.pwstrength.min.js') }}"></script>
     <script src="{{ asset('/assets/stisla/vendor/selectric/public/jquery.selectric.min.js') }}"></script>
     <script src="{{ asset('/assets/stisla/js/page/auth-register.js') }}"></script>
+    <script src="{{ asset('/assets/stisla/vendor/izitoast/dist/js/iziToast.min.js') }}"></script>
+    @if(!empty($errors->all()))
+        <script type="text/javascript">
+            @foreach($errors->all() as $error)
+            iziToast.error({
+                title: '{{ __('Error') }}',
+                message: '{{ $error }}',
+                position: 'bottomCenter'
+            });
+            @endforeach
+        </script>
+    @endif
 @endsection

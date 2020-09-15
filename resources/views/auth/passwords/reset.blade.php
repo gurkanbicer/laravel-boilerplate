@@ -1,25 +1,22 @@
 @extends('layouts.dashboard-auth')
-
+@section('headerStyles')
+    <link href="{{ asset('/assets/stisla/vendor/izitoast/dist/css/iziToast.min.css') }}" rel="stylesheet">
+@endsection
 @section('content')
     <div class="container mt-5">
         <div class="row">
             <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4">
                 <div class="login-brand">
-                    <img src="/assets/stisla/img/stisla-fill.svg" alt="logo" width="100" class="shadow-light rounded-circle">
+                    <i class="fab fa-laravel text-primary" style="font-size: 64px"></i>
                 </div>
                 <div class="card card-primary">
                     <div class="card-header"><h4>{{ __('Reset Password') }}</h4></div>
                     <div class="card-body">
-                        @if (session('status'))
-                            <div class="alert alert-success" role="alert">
-                                {{ session('status') }}
-                            </div>
-                        @endif
                         <form method="POST" action="{{ route('password.update') }}">
                             @csrf
                             <input type="hidden" name="token" value="{{ $token }}">
                             <div class="form-group">
-                                <label for="email">Email</label>
+                                <label for="email">{{ __('E-Mail Address') }}</label>
                                 <input id="email" type="email" class="form-control  @error('email') is-invalid @enderror "
                                        name="email" value="{{ $email ?? old('email') }}" tabindex="1" required autocomplete="email" autofocus>
                                 @error('email')
@@ -55,11 +52,15 @@
                                     {{ __('Reset Password') }}
                                 </button>
                             </div>
+                            <div class="form-divider"></div>
+                            <div class="form-group">
+                                <a class="btn btn-info" href="{{ route('login') }}">Login</a>
+                            </div>
                         </form>
                     </div>
                 </div>
                 <div class="simple-footer">
-                    Copyright &copy; {{ \Carbon\Carbon::now()->format('Y') }} - {{ env('APP_NAME') }}
+                    Copyright &copy; {{ \Carbon\Carbon::now()->format('Y') }} - <span class="text-primary font-weight-bold">{{ env('APP_NAME') }}</span>
                 </div>
             </div>
         </div>
@@ -69,4 +70,25 @@
     <script src="{{ asset('/assets/stisla/vendor/jquery-pwstrength/jquery.pwstrength.min.js') }}"></script>
     <script src="{{ asset('/assets/stisla/vendor/selectric/public/jquery.selectric.min.js') }}"></script>
     <script src="{{ asset('/assets/stisla/js/page/auth-register.js') }}"></script>
+    <script src="{{ asset('/assets/stisla/vendor/izitoast/dist/js/iziToast.min.js') }}"></script>
+    @if (session('status'))
+        <script type="text/javascript">
+            iziToast.success({
+                title: '{{ __('Success') }}',
+                message: ' {{ session('status') }}',
+                position: 'bottomCenter'
+            });
+        </script>
+    @endif
+    @if(!empty($errors->all()))
+        <script type="text/javascript">
+            @foreach($errors->all() as $error)
+            iziToast.error({
+                title: '{{ __('Error') }}',
+                message: '{{ $error }}',
+                position: 'bottomCenter'
+            });
+            @endforeach
+        </script>
+    @endif
 @endsection

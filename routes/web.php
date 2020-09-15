@@ -13,9 +13,7 @@ Route::get('/', [
 ])->name('guestIndex');
 
 ### auth
-Auth::routes([
-    'verify' => true
-]);
+Auth::routes();
 
 Route::get('dashboard', [
     App\Http\Controllers\Auth\DashboardController::class, 'index'

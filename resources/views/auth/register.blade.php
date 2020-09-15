@@ -101,7 +101,6 @@
 @endsection
 @section('footerScripts')
     <script src="{{ asset('/assets/stisla/vendor/jquery-pwstrength/jquery.pwstrength.min.js') }}"></script>
-    <script src="{{ asset('/assets/stisla/vendor/selectric/public/jquery.selectric.min.js') }}"></script>
     <script src="{{ asset('/assets/stisla/js/page/auth-register.js') }}"></script>
     <script src="{{ asset('/assets/stisla/vendor/izitoast/dist/js/iziToast.min.js') }}"></script>
     @if(!empty($errors->all()))

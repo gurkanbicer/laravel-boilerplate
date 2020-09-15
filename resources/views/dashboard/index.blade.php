@@ -5,21 +5,21 @@
             <h1>{{ __('Dashboard') }}</h1>
         </div>
         <div class="section-body">
-            <div class="alert alert-success">
+            <div class="alert alert-light">
                 @if(isAuthRoleAdmin())
-                    {{ __('Hi, admin!') }}
+                    <h5>{{ __('Hi, admin!') }}</h5>
                 @endif
 
                 @if(isAuthRoleSuperUser())
-                    {{ __('Hi, super user!') }}
+                    <h5>{{ __('Hi, super user!') }}</h5>
                 @endif
 
                 @if(isAuthRoleUser())
-                    {{ __('Hi, user!') }}
+                    <h5>{{ __('Hi, user!') }}</h5>
                 @endif
 
                 @if(isAuthRoleEndUser())
-                    {{ __('Hi, client!') }}
+                    <h5>{{ __('Hi, client!') }}</h5>
                 @endif
 
                 {{ __('Welcome back!') }}

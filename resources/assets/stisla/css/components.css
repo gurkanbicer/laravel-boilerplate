@@ -527,8 +527,8 @@ tr:first-child > td > .fc-day-grid-event {
 
 /* 1.14 Image Preview */
 .image-preview, #callback-preview {
-  width: 250px;
-  height: 250px;
+  width: 100%;
+  height: 295px;
   border: 2px dashed #ddd;
   border-radius: 3px;
   position: relative;
@@ -546,13 +546,13 @@ tr:first-child > td > .fc-day-grid-event {
 .image-preview label, #callback-preview label {
   position: absolute;
   z-index: 5;
-  opacity: 0.8;
+  opacity: 0.4;
   cursor: pointer;
-  background-color: #bdc3c7;
-  width: 150px;
-  height: 50px;
+  background-color: #000;
+  width: 100px;
+  height: 30px;
   font-size: 12px;
-  line-height: 50px;
+  line-height: 30px;
   text-transform: uppercase;
   top: 0;
   left: 0;

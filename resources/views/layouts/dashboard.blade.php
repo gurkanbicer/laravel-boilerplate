@@ -37,12 +37,26 @@
                         <div class="d-sm-none d-lg-inline-block">{{ __('Hi, :name', ['name' => Auth::user()->first_name . ' ' . Auth::user()->last_name ]) }}</div>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
-                        <a href="#" class="dropdown-item has-icon">
-                            <i class="far fa-user"></i> {{ __('Profile') }}
-                        </a>
-                        <a href="#" class="dropdown-item has-icon">
-                            <i class="fas fa-cog"></i> {{ __('Settings') }}
-                        </a>
+                        @if(isAuthRoleAdmin())
+                            <a href="{{ route('adminOwnAccountDetails') }}" class="dropdown-item has-icon">
+                                <i class="far fa-user"></i> {{ __('Profile') }}
+                            </a>
+                        @endif
+                        @if(isAuthRoleSuperUser())
+                            <a href="{{ route('superuserOwnAccountDetails') }}" class="dropdown-item has-icon">
+                                <i class="far fa-user"></i> {{ __('Profile') }}
+                            </a>
+                        @endif
+                        @if(isAuthRoleUser())
+                            <a href="{{ route('userOwnAccountDetails') }}" class="dropdown-item has-icon">
+                                <i class="far fa-user"></i> {{ __('Profile') }}
+                            </a>
+                        @endif
+                        @if(isAuthRoleEndUser())
+                            <a href="{{ route('enduserOwnAccountDetails') }}" class="dropdown-item has-icon">
+                                <i class="far fa-user"></i> {{ __('Profile') }}
+                            </a>
+                        @endif
                         <div class="dropdown-divider"></div>
                         <a href="{{ route('logout') }}" class="dropdown-item has-icon text-danger"
                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

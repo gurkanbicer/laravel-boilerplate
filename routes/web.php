@@ -15,6 +15,14 @@ Route::get('/', [
 ### auth
 Auth::routes();
 
+Route::get('/login/{provider}', [
+    App\Http\Controllers\Auth\LoginController::class, 'redirectToProvider'
+])->name('oauthLogin');
+
+Route::get('/login/{provider}/callback', [
+    App\Http\Controllers\Auth\LoginController::class, 'handleProviderCallback'
+])->name('oauthLoginCallback');
+
 Route::get('dashboard', [
     App\Http\Controllers\Auth\DashboardController::class, 'index'
 ])->name('dashboardRedirect');

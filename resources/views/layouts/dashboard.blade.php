@@ -58,10 +58,10 @@
         <div class="main-sidebar">
             <aside id="sidebar-wrapper">
                 <div class="sidebar-brand">
-                    <a href="{{ route('dashboardRedirect') }}">{{ env('APP_NAME') }}</a>
+                    <a href="{{ route('dashboardRedirect') }}"><i class="fab fa-laravel text-primary mt-3" style="font-size: 32px;"></i></a>
                 </div>
                 <div class="sidebar-brand sidebar-brand-sm">
-                    <a href="{{ route('dashboardRedirect') }}">{{ substr(env('APP_NAME'), 0, 1) }}</a>
+                    <a href="{{ route('dashboardRedirect') }}"><i class="fab fa-laravel text-primary mt-3" style="font-size: 32px;"></i></a>
                 </div>
                 <ul class="sidebar-menu">
                     <li class="menu-header">{{ __('Dashboard') }}</li>

@@ -57,6 +57,7 @@
                             <div class="form-divider"></div>
                             <div class="form-group">
                                 <a class="btn btn-info" href="{{ route('register') }}">Register</a>
+                                <a class="btn btn-dark ml-2" href="{{ route('oauthLogin', ['provider' => 'github']) }}"><i class="fab fa-github"></i></a>
                             </div>
                         </form>
                     </div>

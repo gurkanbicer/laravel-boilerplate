@@ -5,24 +5,11 @@
             <h1>{{ __('Dashboard') }}</h1>
         </div>
         <div class="section-body">
-            <div class="alert alert-light">
-                @if(isAuthRoleAdmin())
-                    <h5>{{ __('Hi, admin!') }}</h5>
-                @endif
-
-                @if(isAuthRoleSuperUser())
-                    <h5>{{ __('Hi, super user!') }}</h5>
-                @endif
-
-                @if(isAuthRoleUser())
-                    <h5>{{ __('Hi, user!') }}</h5>
-                @endif
-
-                @if(isAuthRoleEndUser())
-                    <h5>{{ __('Hi, client!') }}</h5>
-                @endif
-
-                {{ __('Welcome back!') }}
+            <div class="hero bg-primary text-white">
+                <div class="hero-inner">
+                    <h2>{{ __('Welcome back, :name!', ['name' => Auth::user()->first_name]) }}</h2>
+                    <p class="lead">This is your dashoard. Your role is <strong>{{ getAuthenticatedUserRole() }}.</strong></p>
+                </div>
             </div>
         </div>
     </section>

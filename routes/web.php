@@ -56,6 +56,22 @@ Route::prefix($roleAdminUriPrefix)->group(function() {
     Route::get('user/{id}', [
         App\Http\Controllers\Admin\UserController::class, 'getUser'
     ])->name('adminGetUser');
+
+    Route::post('update-user', [
+        App\Http\Controllers\Admin\UserController::class, 'updateUser'
+    ])->name('adminUpdateUser');
+
+    Route::post('change-user-password', [
+        App\Http\Controllers\Admin\UserController::class, 'changePassword'
+    ])->name('adminChangeUserPassword');
+
+    Route::post('delete-user', [
+        App\Http\Controllers\Admin\UserController::class, 'deleteUser'
+    ])->name('adminDeleteUser');
+
+    Route::post('change-user-profile-image', [
+        App\Http\Controllers\Admin\UploadController::class, 'changeUserProfileImage'
+    ])->name('adminChangeUserProfileImage');
 });
 
 ### superuser

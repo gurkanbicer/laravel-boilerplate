@@ -5,9 +5,10 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
     <title>{{ $page_title ?? env('APP_NAME') }}</title>
     <link rel="stylesheet" href="{{ asset('/assets/stisla/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('/assets/stisla/vendor/fontawesome5/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('/assets/stisla/node_modules/@fortawesome/fontawesome-free/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('/assets/stisla/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('/assets/stisla/css/components.css') }}">
+    <link rel="stylesheet" href="{{ asset('/assets/stisla/node_modules/izitoast/dist/css/iziToast.min.css') }}">
     @yield('headerStyles')
     @yield('headerScripts')
 </head>
@@ -23,6 +24,7 @@
 <script src="{{ asset('/assets/stisla/js/stisla.js') }}"></script>
 <script src="{{ asset('/assets/stisla/js/scripts.js') }}"></script>
 <script src="{{ asset('/assets/stisla/js/custom.js') }}"></script>
+<script src="{{ asset('/assets/stisla/node_modules/izitoast/dist/js/iziToast.min.js') }}"></script>
 @yield('footerScripts')
 </body>
 </html>

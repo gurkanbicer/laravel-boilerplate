@@ -1,7 +1,4 @@
 @extends('layouts.dashboard-auth')
-@section('headerStyles')
-    <link href="{{ asset('/assets/stisla/vendor/izitoast/dist/css/iziToast.min.css') }}" rel="stylesheet">
-@endsection
 @section('content')
     <div class="container mt-5">
         <div class="row">
@@ -67,9 +64,8 @@
     </div>
 @endsection
 @section('footerScripts')
-    <script src="{{ asset('/assets/stisla/vendor/jquery-pwstrength/jquery.pwstrength.min.js') }}"></script>
+    <script src="{{ asset('/assets/stisla/node_modules/jquery-pwstrength/jquery.pwstrength.min.js') }}"></script>
     <script src="{{ asset('/assets/stisla/js/page/auth-register.js') }}"></script>
-    <script src="{{ asset('/assets/stisla/vendor/izitoast/dist/js/iziToast.min.js') }}"></script>
     @if (session('status'))
         <script type="text/javascript">
             iziToast.success({

@@ -1,11 +1,8 @@
 @extends('layouts.dashboard')
-@section('headerStyles')
-    <link href="{{ asset('/assets/stisla/vendor/izitoast/dist/css/iziToast.min.css') }}" rel="stylesheet">
-@endsection
 @section('content')
     <section class="section">
         <div class="section-header">
-            <h1>{{ __('Account Details') }}</h1>
+            <h1>{{ __('Your Account Details') }}</h1>
         </div>
         <div class="section-body">
             <div class="row">
@@ -90,6 +87,42 @@
                                 </div>
                             </form>
                         </div>
+                        <div class="card-header">
+                            <h4 class="card-title">{{ __('Profile Image') }}</h4>
+                        </div>
+                        <div class="card-body">
+                            @if(isAuthRoleAdmin())
+                            <form method="POST" action="{{ route('adminOwnAccountProfileImageUpload') }}" enctype="multipart/form-data">
+                            @elseif(isAuthRoleSuperUser())
+                            <form method="POST" action="{{ route('superuserOwnAccountProfileImageUpload') }}" enctype="multipart/form-data">
+                            @elseif(isAuthRoleUser())
+                            <form method="POST" action="{{ route('userOwnAccountProfileImageUpload') }}" enctype="multipart/form-data">
+                            @elseif(isAuthRoleEndUser())
+                            <form method="POST" action="{{ route('enduserOwnAccountProfileImageUpload') }}" enctype="multipart/form-data">
+                            @endif
+                                @csrf
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <label class="control-label">{{ __('Current Profile Image') }}</label>
+                                        @if(is_null(Auth::user()->profile_image))
+                                            <img alt="image" src="{{ asset('/assets/stisla/img/avatar/avatar-1.png') }}" class="img-fluid mr-1">
+                                        @else
+                                            <img alt="image" src="{{ Auth::user()->profile_image }}" class="img-fluid mr-1">
+                                        @endif
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="control-label">{{ __('New Profile Image') }}</label>
+                                        <div id="image-preview" class="image-preview">
+                                            <label for="image-upload" id="image-label">{{ __('Choose') }}</label>
+                                            <input type="file" name="profile_image" id="image-upload" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary">{{ __('Change') }}</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
                 <div class="col-sm-12 col-md-6">
@@ -99,13 +132,13 @@
                         </div>
                         <div class="card-body">
                             @if(isAuthRoleAdmin())
-                                <form method="POST" action="{{ route('adminOwnAccountPasswordChange') }}">
+                            <form method="POST" action="{{ route('adminOwnAccountPasswordChange') }}">
                             @elseif(isAuthRoleSuperUser())
-                                <form method="POST" action="{{ route('superuserOwnAccountPasswordChange') }}">
+                            <form method="POST" action="{{ route('superuserOwnAccountPasswordChange') }}">
                             @elseif(isAuthRoleUser())
-                                <form method="POST" action="{{ route('userOwnAccountPasswordChange') }}">
+                            <form method="POST" action="{{ route('userOwnAccountPasswordChange') }}">
                             @elseif(isAuthRoleEndUser())
-                                <form method="POST" action="{{ route('enduserOwnAccountPasswordChange') }}">
+                            <form method="POST" action="{{ route('enduserOwnAccountPasswordChange') }}">
                             @endif
                                 @csrf
                                 <div class="form-group">
@@ -114,9 +147,9 @@
                                            class="form-control @error('password') is-invalid @enderror "
                                            name="password" value="" required autocomplete="off">
                                     @error('password')
-                                        <div class="invalid-feedback">
-                                            <strong>{{ $message }}</strong>
-                                        </div>
+                                    <div class="invalid-feedback">
+                                        <strong>{{ $message }}</strong>
+                                    </div>
                                     @enderror
                                 </div>
 
@@ -126,9 +159,9 @@
                                            class="form-control @error('new_password') is-invalid @enderror "
                                            name="new_password" value="" required autocomplete="off">
                                     @error('new_password')
-                                        <div class="invalid-feedback">
-                                            <strong>{{ $message }}</strong>
-                                        </div>
+                                    <div class="invalid-feedback">
+                                        <strong>{{ $message }}</strong>
+                                    </div>
                                     @enderror
                                 </div>
 
@@ -146,53 +179,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-12 col-md-6">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-title">Upload Profile Image</h4>
-                        </div>
-                        <div class="card-body">
-                            @if(isAuthRoleAdmin())
-                                <form method="POST" action="{{ route('adminOwnAccountProfileImageUpload') }}" enctype="multipart/form-data">
-                            @elseif(isAuthRoleSuperUser())
-                                <form method="POST" action="{{ route('superuserOwnAccountProfileImageUpload') }}" enctype="multipart/form-data">
-                            @elseif(isAuthRoleUser())
-                                <form method="POST" action="{{ route('userOwnAccountProfileImageUpload') }}" enctype="multipart/form-data">
-                            @elseif(isAuthRoleEndUser())
-                                <form method="POST" action="{{ route('enduserOwnAccountProfileImageUpload') }}" enctype="multipart/form-data">
-                            @endif
-                                @csrf
-                                <div class="row">
-                                    <div class="form-group col-md-6">
-                                        <label class="control-label">Current Profile Image</label>
-                                        @if(is_null(Auth::user()->profile_image))
-                                            <img alt="image" src="/assets/stisla/img/avatar/avatar-1.png" class="img-fluid mr-1">
-                                        @else
-                                            <img alt="image" src="{{ Auth::user()->profile_image }}" class="img-fluid mr-1">
-                                        @endif
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <label class="control-label">New Profile Image</label>
-                                        <div id="image-preview" class="image-preview">
-                                            <label for="image-upload" id="image-label">Choose</label>
-                                            <input type="file" name="profile_image" id="image-upload" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-primary">Save</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
 @endsection
 @section('footerScripts')
-    <script src="{{ asset('/assets/stisla/vendor/izitoast/dist/js/iziToast.min.js') }}"></script>
-    <script src="{{ asset('/assets/stisla/vendor/jquery_upload_preview/assets/js/jquery.uploadPreview.js') }}"></script>
     <script>
         $.uploadPreview({
             input_field: "#image-upload",

@@ -5,9 +5,10 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
     <title>{{ $page_title ?? env('APP_NAME') }}</title>
     <link rel="stylesheet" href="{{ asset('/assets/stisla/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('/assets/stisla/vendor/fontawesome5/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('/assets/stisla/node_modules/@fortawesome/fontawesome-free/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('/assets/stisla/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('/assets/stisla/css/components.css') }}">
+    <link rel="stylesheet" href="{{ asset('/assets/stisla/node_modules/izitoast/dist/css/iziToast.min.css') }}">
     @yield('headerStyles')
     @yield('headerScripts')
 </head>
@@ -25,36 +26,44 @@
                 <li class="dropdown">
                     <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
                         @if(is_null(Auth::user()->profile_image))
-                            <img alt="image" src="/assets/stisla/img/avatar/avatar-1.png" class="rounded-circle mr-1">
+                            <img alt="image" src="{{ asset('/assets/stisla/img/avatar/avatar-1.png') }}" class="rounded-circle mr-1">
                         @else
                             <img alt="image" src="{{ Auth::user()->profile_image }}" class="rounded-circle mr-1">
                         @endif
-                        <div class="d-sm-none d-lg-inline-block">{{ __('Hi, :name', ['name' => Auth::user()->first_name . ' ' . Auth::user()->last_name ]) }}</div>
+                        <div class="d-sm-none d-lg-inline-block">
+                            {{ __('Hi') }},
+                            @if(is_null(Auth::user()->display_name))
+                                {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
+                            @else
+                                {{ Auth::user()->display_name }}
+                            @endif
+                        </div>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
-                        @if(isAuthRoleAdmin())
+                        @switch(getAuthenticatedUserRole())
+                            @case('admin')
                             <a href="{{ route('adminOwnAccountDetails') }}" class="dropdown-item has-icon">
                                 <i class="far fa-user"></i> {{ __('Profile') }}
                             </a>
-                        @endif
-                        @if(isAuthRoleSuperUser())
+                            @break
+                            @case('superuser')
                             <a href="{{ route('superuserOwnAccountDetails') }}" class="dropdown-item has-icon">
                                 <i class="far fa-user"></i> {{ __('Profile') }}
                             </a>
-                        @endif
-                        @if(isAuthRoleUser())
+                            @break
+                            @case('user')
                             <a href="{{ route('userOwnAccountDetails') }}" class="dropdown-item has-icon">
                                 <i class="far fa-user"></i> {{ __('Profile') }}
                             </a>
-                        @endif
-                        @if(isAuthRoleEndUser())
+                            @break
+                            @case('enduser')
                             <a href="{{ route('enduserOwnAccountDetails') }}" class="dropdown-item has-icon">
                                 <i class="far fa-user"></i> {{ __('Profile') }}
                             </a>
-                        @endif
+                            @break
+                        @endswitch
                         <div class="dropdown-divider"></div>
-                        <a href="{{ route('logout') }}" class="dropdown-item has-icon text-danger"
-                           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        <a href="{{ route('logout') }}" class="dropdown-item has-icon text-danger" onclick="logout('logout-form');">
                             <i class="fas fa-sign-out-alt"></i> {{ __('Logout') }}
                         </a>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -74,15 +83,22 @@
                 </div>
                 <ul class="sidebar-menu">
                     <li class="menu-header">{{ __('Menu') }}</li>
-                    <li class="nav-item @if (\Route::is('adminIndex')) active @endif ">
+                    <li class="nav-item">
                         <a href="{{ route('dashboardRedirect') }}"><i class="fas fa-columns"></i><span>{{ __('Dashboard') }}</span></a>
                     </li>
-                    @if(isAuthRoleAdmin())
+                    @switch(getAuthenticatedUserRole())
+                        @case('admin')
                         <li class="nav-item @if (\Route::is('adminListUsers')) active @endif ">
                             <a href="{{ route('adminListUsers') }}"><i class="fas fa-users"></i><span>{{ __('Users') }}</span></a>
                         </li>
-                    @endif
-                    @yield('sidebar')
+                        @break
+                        @case('superuser')
+                        @break
+                        @case('user')
+                        @break
+                        @case('enduser')
+                        @break
+                    @endswitch
                 </ul>
                 <div class="mt-4 mb-4 p-3 hide-sidebar-mini">
                     <a href="{{ route('guestIndex') }}" class="btn btn-primary btn-lg btn-block btn-icon-split">
@@ -91,7 +107,6 @@
                 </div>
             </aside>
         </div>
-        <!-- Main Content -->
         <div class="main-content">
             @yield('content')
         </div>
@@ -113,6 +128,14 @@
 <script src="{{ asset('/assets/stisla/js/stisla.js') }}"></script>
 <script src="{{ asset('/assets/stisla/js/scripts.js') }}"></script>
 <script src="{{ asset('/assets/stisla/js/custom.js') }}"></script>
+<script src="{{ asset('/assets/stisla/node_modules/izitoast/dist/js/iziToast.min.js') }}"></script>
+<script src="{{ asset('/assets/stisla/node_modules/jquery_upload_preview/assets/js/jquery.uploadPreview.js') }}"></script>
+<script type="text/javascript">
+    function logout(formid) {
+        event.preventDefault();
+        document.getElementById(formid).submit();
+    }
+</script>
 @yield('footerScripts')
 </body>
 </html>

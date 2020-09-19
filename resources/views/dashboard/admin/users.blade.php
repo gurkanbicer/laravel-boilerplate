@@ -12,7 +12,7 @@
                         <table class="table table-bordered table-md">
                             <thead>
                                 <tr>
-                                    <th class="text-center align-middle">{{ __('#') }}</th>
+                                    <th class="text-center align-middle">#</th>
                                     <th class="text-left align-middle">{{ __('First Name') }}</th>
                                     <th class="text-left align-middle">{{ __('Last Name') }}</th>
                                     <th class="text-left align-middle">{{ __('Email') }}</th>
@@ -29,7 +29,7 @@
                                     <tr>
                                         <td class="text-center align-middle">
                                             @if(is_null($user->profile_image))
-                                                <img alt="image" src="/assets/stisla/img/avatar/avatar-1.png" class="rounded-circle" width="32px">
+                                                <img alt="image" src="{{ asset('/assets/stisla/img/avatar/avatar-1.png') }}" class="rounded-circle" width="32px">
                                             @else
                                                 <img alt="image" src="{{ $user->profile_image }}" class="rounded-circle" width="32px">
                                             @endif
@@ -85,7 +85,7 @@
                                             {{ \Carbon\Carbon::parse($user->updated_at)->format('d/m/Y H:i') }}
                                         </td>
                                         <td class="text-center align-middle">
-                                            <a class="btn btn-primary btn-sm" href="{{ route('adminGetUser', ['id' => $user->id]) }}">Edit</a>
+                                            <a class="btn btn-primary btn-sm" href="{{ route('adminGetUser', ['id' => $user->id]) }}">{{ __('Edit User') }}</a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -101,4 +101,35 @@
             </div>
         </div>
     </section>
+@endsection
+@section('footerScripts')
+    @if (session('actionStatus') == "success")
+        <script type="text/javascript">
+            iziToast.success({
+                title: '{{ __('Success') }}',
+                message: ' {{ session('actionStatusMessage') }}',
+                position: 'topRight'
+            });
+        </script>
+    @endif
+    @if (session('actionStatus') == "error")
+        <script type="text/javascript">
+            iziToast.error({
+                title: '{{ __('Error') }}',
+                message: ' {{ session('actionStatusMessage') }}',
+                position: 'topRight'
+            });
+        </script>
+    @endif
+    @if(!empty($errors->all()))
+        <script type="text/javascript">
+            @foreach($errors->all() as $message)
+            iziToast.error({
+                title: '{{ __('Error') }}',
+                message: '{{ $message }}',
+                position: 'topRight'
+            });
+            @endforeach
+        </script>
+    @endif
 @endsection

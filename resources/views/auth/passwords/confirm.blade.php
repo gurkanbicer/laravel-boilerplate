@@ -1,7 +1,4 @@
 @extends('layouts.dashboard-auth')
-@section('headerStyles')
-    <link href="{{ asset('/assets/stisla/vendor/izitoast/dist/css/iziToast.min.css') }}" rel="stylesheet">
-@endsection
 @section('content')
     <div class="container mt-5">
         <div class="row">
@@ -48,7 +45,6 @@
     </div>
 @endsection
 @section('footerScripts')
-    <script src="{{ asset('/assets/stisla/vendor/izitoast/dist/js/iziToast.min.js') }}"></script>
     @if(!empty($errors->all()))
         <script type="text/javascript">
             @foreach($errors->all() as $error)

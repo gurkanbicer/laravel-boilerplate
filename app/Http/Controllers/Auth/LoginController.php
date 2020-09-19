@@ -38,11 +38,9 @@ class LoginController extends Controller
             if ($account->status == "suspended") {
                 $this->incrementLoginAttempts($request);
                 return $this->sendFailedLoginResponse($request, 'suspended');
-                //return Redirect::back()->with(['email', 'The account has been suspended.']);
             } else if ($account->status == "closed") {
                 $this->incrementLoginAttempts($request);
                 return $this->sendFailedLoginResponse($request, 'closed');
-                //return Redirect::back()->with(['email', 'The account has been closed.']);
             }
         }
 
@@ -87,47 +85,64 @@ class LoginController extends Controller
                 abort(404);
         }
 
-        try {
-            $localProviderUser = User::query()
-                ->where('oauth_provider', '=', $provider)
-                ->where('oauth_id', '=', $user->getId())
-                ->first();
+        $localProviderUser = User::query()
+            ->where('oauth_provider', '=', $provider)
+            ->where('oauth_id', '=', $user->getId())
+            ->first();
 
-            if (!is_null($localProviderUser)) {
-                Auth::loginUsingId($localProviderUser->id);
+        if (!is_null($localProviderUser)) {
+            if ($localProviderUser->status == "suspended") {
+                return $this->sendFailedLoginResponse($request, 'suspended');
+            } else if ($localProviderUser->status == "closed") {
+                return $this->sendFailedLoginResponse($request, 'closed');
+            }
+
+            Auth::loginUsingId($localProviderUser->id);
+            return $this->sendLoginResponse($request);
+        } else {
+            $isHaveLocalUser = User::query()
+                ->where('email', '=', $user->getEmail())
+                ->count();
+
+            if ($isHaveLocalUser === 0) {
+                $nameSplit = explode(' ', $user->getName());
+                $userId = User::query()
+                    ->insertGetId([
+                        'email' => $user->getEmail(),
+                        'password' => Hash::make(Str::random(16)),
+                        'role' => 'enduser',
+                        'status' => 'active',
+                        'first_name' => $nameSplit[0],
+                        'last_name' => $nameSplit[1] ?? $nameSplit[0],
+                        'username' => $user->getNickname(),
+                        'display_name' => null,
+                        'oauth_provider' => $provider,
+                        'oauth_id' => $user->getId(),
+                        'profile_image' => $user->getAvatar(),
+                        'created_at' => Carbon::now(),
+                        'updated_at' => Carbon::now(),
+                    ]);
+                Auth::loginUsingId($userId);
                 return $this->sendLoginResponse($request);
             } else {
-                $isHaveLocalUser = User::query()
-                    ->where('email', '=', $user->getEmail())
-                    ->count();
-
-                if ($isHaveLocalUser === 0) {
-                    $nameSplit = explode(' ', $user->getName());
-                    $userId = User::query()
-                        ->insertGetId([
-                            'email' => $user->getEmail(),
-                            'password' => Hash::make(Str::random(16)),
-                            'role' => 'enduser',
-                            'status' => 'active',
-                            'first_name' => $nameSplit[0],
-                            'last_name' => $nameSplit[1] ?? $nameSplit[0],
-                            'username' => $user->getNickname(),
-                            'display_name' => null,
-                            'oauth_provider' => $provider,
-                            'oauth_id' => $user->getId(),
-                            'profile_image' => $user->getAvatar(),
-                            'created_at' => Carbon::now(),
-                            'updated_at' => Carbon::now(),
-                        ]);
-                    Auth::loginUsingId($userId);
-                    return $this->sendLoginResponse($request);
-                } else {
-                    return redirect()->route('login')->withErrors(['email' => 'The account already exists. Please login with your email and password.']);
-                }
+                return redirect()->route('login')->withErrors(['email' => 'The account already exists. Please login with your email and password.']);
             }
-        } catch (\Exception $exception) {
-            return redirect()->route('login')->withErrors(['email' => 'Unknown error.']);
         }
+
+        if (method_exists($this, 'hasTooManyLoginAttempts') &&
+            $this->hasTooManyLoginAttempts($request)) {
+            $this->fireLockoutEvent($request);
+
+            return $this->sendLockoutResponse($request);
+        }
+
+        if ($this->attemptLogin($request)) {
+            return $this->sendLoginResponse($request);
+        }
+
+        $this->incrementLoginAttempts($request);
+
+        return $this->sendFailedLoginResponse($request);
     }
 
     protected function sendFailedLoginResponse(Request $request, $key = 'failed')

@@ -87,4 +87,14 @@ There is 4 role.
 
 The first registration process creates the administrator account. End user accounts are created in all subsequent registration processes. If you want you can use roles for different purposes with different management dashboards or you can use roles just as admin and enduser. Or, you can add more. It's up to you.
 
+### Demo
+
+#### Admin
+
+Login URL: https://laravel-boilerplate-test.grkn.co
+```
+E-Mail Address: admin@laravel-boilerplate.test
+Password: 6WcDbivpsugu4Z
+```
+
 You can say hello for any queries; http://www.grkn.co/contact

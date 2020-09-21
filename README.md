@@ -18,9 +18,7 @@ cd ../../../
 yarn install && yarn run dev
 cp .env.example .env
 php artisan key:generate
-cd public 
 php artisan storage:link
-cd ../
 ```
 
 You can edit now environment file for change database credentials, oauth and email account credentials etc.

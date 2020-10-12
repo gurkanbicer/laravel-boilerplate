@@ -72,15 +72,15 @@ php artisan migrate
 php artisan serve
 ```
 
-Open the browser and type to address bar; http://localhost:8000
+Open the browser and type to address bar; http://127.0.0.1:8000
 
 ### About Roles
 
 There is 4 role. 
 
-- admin (top level tasks)
-- superuser (middle level tasks)
-- user (basic level tasks)
+- admin (top level tasks and + sub-level role access)
+- superuser (middle level tasks + sub-level role access)
+- user (basic level tasks + sub-level role access)
 - enduser (you can think it as a client)
 
 The first registration process creates the administrator account. End user accounts are created in all subsequent registration processes. If you want you can use roles for different purposes with different management dashboards or you can use roles just as admin and enduser. Or, you can add more. It's up to you.

@@ -11,11 +11,13 @@ class EndUser
     public function handle(Request $request, Closure $next)
     {
         if (Auth::check()) {
-            if (Auth::user()->role == "enduser") {
+            if (havePermission('enduser')) {
                 return $next($request);
             }
-        }
 
-        return redirect()->route('dashboardRedirect')->with('error', "Only enduser can access!");
+            return redirect()->route('dashboardIndex')->withErrors([__("You don't have authorized for this request.")]);
+        } else {
+            return redirect()->route('login');
+        }
     }
 }

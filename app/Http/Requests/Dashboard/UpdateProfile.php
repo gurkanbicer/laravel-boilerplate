@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Requests\Common;
+namespace App\Http\Requests\Dashboard;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+use App\Models\User;
 
-class UpdateOwnAccountDetails extends FormRequest
+class UpdateProfile extends FormRequest
 {
     public function authorize()
     {
@@ -30,25 +31,23 @@ class UpdateOwnAccountDetails extends FormRequest
             ],
             'display_name' => [
                 'nullable',
-                'required',
                 'string',
                 'min:3',
                 'max:255',
             ],
             'username' => [
                 'nullable',
-                'required',
                 'string',
                 'min:3',
                 'max:255',
-                Rule::unique('users')->ignore(Auth::id()),
+                Rule::unique(User::class)->ignore(Auth::id()),
             ],
             'email' => [
                 'required',
                 'string',
                 'email',
                 'max:255',
-                Rule::unique('users')->ignore(Auth::id()),
+                Rule::unique(User::class)->ignore(Auth::id()),
             ]
         ];
     }

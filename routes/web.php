@@ -1,11 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
-$roleAdminUriPrefix = 'dashboard/admin';
-$roleSuperUserUriPrefix = 'dashboard/superuser';
-$roleUserUriPrefix = 'dashboard/user';
-$roleEndUserUriPrefix = 'dashboard/client';
+use Illuminate\Support\Facades\Auth;
 
 ### guest
 Route::get('/', [
@@ -23,122 +19,60 @@ Route::get('/login/{provider}/callback', [
     App\Http\Controllers\Auth\LoginController::class, 'handleProviderCallback'
 ])->name('oauthLoginCallback');
 
-Route::get('dashboard', [
-    App\Http\Controllers\Auth\DashboardController::class, 'index'
-])->name('dashboardRedirect');
+Route::prefix('dashboard')->group(function() {
 
-### admin
-Route::prefix($roleAdminUriPrefix)->group(function() {
-    Route::get('index', [
-        App\Http\Controllers\Admin\HomeController::class, 'index'
-    ])->name('adminIndex');
+    Route::get( 'index', [
+        App\Http\Controllers\Dashboard\HomeController::class, 'index'
+    ])->name('dashboardIndex')->middleware('enduser');
 
-    Route::get('account-details', [
-        App\Http\Controllers\Common\AccountController::class, 'ownAccountDetails'
-    ])->name('adminOwnAccountDetails');
+    Route::prefix('profile')->group(function () {
 
-    Route::post('account-details/update', [
-        App\Http\Controllers\Common\AccountController::class, 'updateOwnAccountDetails'
-    ])->name('adminOwnAccountDetailsUpdate');
+        Route::get( 'edit', [
+            App\Http\Controllers\Dashboard\ProfileController::class, 'editProfile'
+        ])->name('dashboardProfileEdit')->middleware('enduser');
 
-    Route::post('account-details/change-password', [
-        App\Http\Controllers\Common\AccountController::class, 'changeOwnAccountPassword'
-    ])->name('adminOwnAccountPasswordChange');
+        Route::post('update', [
+            App\Http\Controllers\Dashboard\ProfileController::class, 'updateProfile'
+        ])->name('dashboardProfileUpdate')->middleware('enduser');
 
-    Route::post('account-details/profile-image/upload', [
-        App\Http\Controllers\Common\UploadController::class, 'uploadOwnAccountProfileImage'
-    ])->name('adminOwnAccountProfileImageUpload');
+        Route::post('change-password', [
+            App\Http\Controllers\Dashboard\ProfileController::class, 'changePassword'
+        ])->name('dashboardProfileChangePassword')->middleware('enduser');
 
-    Route::get('users', [
-        App\Http\Controllers\Admin\UserController::class, 'listUsers'
-    ])->name('adminListUsers');
+        Route::post('account/profile-image/upload', [
+            App\Http\Controllers\Dashboard\ProfileController::class, 'updateProfileImage'
+        ])->name('dashboardProfileImageUpdate')->middleware('enduser');
 
-    Route::get('user/{id}', [
-        App\Http\Controllers\Admin\UserController::class, 'getUser'
-    ])->name('adminGetUser');
+    });
 
-    Route::post('update-user', [
-        App\Http\Controllers\Admin\UserController::class, 'updateUser'
-    ])->name('adminUpdateUser');
+    Route::prefix('user')->group(function () {
 
-    Route::post('change-user-password', [
-        App\Http\Controllers\Admin\UserController::class, 'changePassword'
-    ])->name('adminChangeUserPassword');
+        Route::get( 'list', [
+            App\Http\Controllers\Dashboard\UserController::class, 'listUsers'
+        ])->name('dashboardUserList')->middleware('admin');
 
-    Route::post('delete-user', [
-        App\Http\Controllers\Admin\UserController::class, 'deleteUser'
-    ])->name('adminDeleteUser');
+        Route::get( 'edit/{id}', [
+            App\Http\Controllers\Dashboard\UserController::class, 'editUser'
+        ])->name('dashboardUserEdit')->middleware('admin');
 
-    Route::post('change-user-profile-image', [
-        App\Http\Controllers\Admin\UploadController::class, 'changeUserProfileImage'
-    ])->name('adminChangeUserProfileImage');
+        Route::post('update', [
+            App\Http\Controllers\Dashboard\UserController::class, 'updateUser'
+        ])->name('dashboardUserUpdate')->middleware('admin');
+
+        Route::post('delete', [
+            App\Http\Controllers\Dashboard\UserController::class, 'deleteUser'
+        ])->name('dashboardUserDelete')->middleware('admin');
+
+        Route::post('update/profile-image', [
+            App\Http\Controllers\Dashboard\UserController::class, 'updateUserProfileImage'
+        ])->name('dashboardUserUpdateProfileImage')->middleware('admin');
+
+        Route::post('update/password', [
+            App\Http\Controllers\Dashboard\UserController::class, 'changeUserPassword'
+        ])->name('dashboardUserUpdatePassword')->middleware('admin');
+
+    });
+
 });
 
-### superuser
-Route::prefix($roleSuperUserUriPrefix)->group(function() {
-    Route::get('index', [
-        App\Http\Controllers\SuperUser\HomeController::class, 'index'
-    ])->name('superuserIndex');
-
-    Route::get('account-details', [
-        App\Http\Controllers\Common\AccountController::class, 'ownAccountDetails'
-    ])->name('superuserOwnAccountDetails');
-
-    Route::post('account-details/update', [
-        App\Http\Controllers\Common\AccountController::class, 'updateOwnAccountDetails'
-    ])->name('superuserOwnAccountDetailsUpdate');
-
-    Route::post('account-details/change-password', [
-        App\Http\Controllers\Common\AccountController::class, 'changeOwnAccountPassword'
-    ])->name('superuserOwnAccountPasswordChange');
-
-    Route::post('account-details/profile-image/upload', [
-        App\Http\Controllers\Common\UploadController::class, 'uploadOwnAccountProfileImage'
-    ])->name('superuserOwnAccountProfileImageUpload');
-});
-
-### user
-Route::prefix($roleUserUriPrefix)->group(function() {
-    Route::get('index', [
-        App\Http\Controllers\User\HomeController::class, 'index'
-    ])->name('userIndex');
-
-    Route::get('account-details', [
-        App\Http\Controllers\Common\AccountController::class, 'ownAccountDetails'
-    ])->name('userOwnAccountDetails');
-
-    Route::post('account-details/update', [
-        App\Http\Controllers\Common\AccountController::class, 'updateOwnAccountDetails'
-    ])->name('userOwnAccountDetailsUpdate');
-
-    Route::post('account-details/change-password', [
-        App\Http\Controllers\Common\AccountController::class, 'changeOwnAccountPassword'
-    ])->name('userOwnAccountPasswordChange');
-
-    Route::post('account-details/profile-image/upload', [
-        App\Http\Controllers\Common\UploadController::class, 'uploadOwnAccountProfileImage'
-    ])->name('userOwnAccountProfileImageUpload');
-});
-
-### enduser
-Route::prefix($roleEndUserUriPrefix)->group(function() {
-    Route::get('index', [
-        App\Http\Controllers\EndUser\HomeController::class, 'index'
-    ])->name('enduserIndex');
-
-    Route::get('account-details', [
-        App\Http\Controllers\Common\AccountController::class, 'ownAccountDetails'
-    ])->name('enduserOwnAccountDetails');
-
-    Route::post('account-details/update', [
-        App\Http\Controllers\Common\AccountController::class, 'updateOwnAccountDetails'
-    ])->name('enduserOwnAccountDetailsUpdate');
-
-    Route::post('account-details/change-password', [
-        App\Http\Controllers\Common\AccountController::class, 'changeOwnAccountPassword'
-    ])->name('enduserOwnAccountPasswordChange');
-
-    Route::post('account-details/profile-image/upload', [
-        App\Http\Controllers\Common\UploadController::class, 'uploadOwnAccountProfileImage'
-    ])->name('enduserOwnAccountProfileImageUpload');
-});
+Route::redirect('dashboard', '/dashboard/index')->middleware('enduser');

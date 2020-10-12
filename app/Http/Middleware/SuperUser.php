@@ -11,11 +11,13 @@ class SuperUser
     public function handle(Request $request, Closure $next)
     {
         if (Auth::check()) {
-            if (Auth::user()->role == "superuser") {
+            if (havePermission('superuser')) {
                 return $next($request);
             }
-        }
 
-        return redirect()->route('dashboardRedirect')->with('error', "Only superuser can access!");
+            return redirect()->route('dashboardIndex')->withErrors([__("You don't have authorized for this request.")]);
+        } else {
+            return redirect()->route('login');
+        }
     }
 }

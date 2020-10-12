@@ -1,26 +1,22 @@
 <?php
 
-namespace App\Http\Requests\Admin;
+namespace App\Http\Requests\Dashboard;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UploadUserProfileImage extends FormRequest
+class UpdateProfileImage extends FormRequest
 {
     public function authorize()
     {
-        return (isAuthRoleAdmin()) ? true : false;
+        return true;
     }
 
     public function rules()
     {
         return [
-            'id' => [
-                'required',
-                'numeric',
-                Rule::exists('users')
-            ],
             'profile_image' => [
+                'required',
                 'file',
                 'max:1024',
                 'mimes:jpg,jpeg,png,svg',

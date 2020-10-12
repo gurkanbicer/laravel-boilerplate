@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Common;
+namespace App\Http\Requests\Dashboard;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ChangeOwnAccountPassword extends FormRequest
+class ChangePassword extends FormRequest
 {
     public function authorize()
     {

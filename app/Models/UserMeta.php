@@ -19,7 +19,7 @@ class UserMeta extends Model
         'user_id'
     ];
 
-    protected $timestamps = false;
+    public $timestamps = false;
 
     const CREATED_AT = false;
 

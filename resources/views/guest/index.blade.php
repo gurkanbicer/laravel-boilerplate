@@ -30,7 +30,7 @@
             @guest
                 <a class="color-purple" href="{{ route('login') }}">Login</a> @if(Route::has('register'))/ <a class="color-purple" href="{{ route('register') }}">Register</a>@endif
             @else
-                <a class="color-purple" href="{{ route('dashboardRedirect') }}">Dashboard</a>
+                <a class="color-purple" href="{{ route('dashboardIndex') }}">Dashboard</a>
             @endif
         </div>
     </div>

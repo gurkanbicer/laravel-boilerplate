@@ -12,15 +12,7 @@
                             <h4 class="card-title">{{ __('Basic Information') }}</h4>
                         </div>
                         <div class="card-body">
-                            @if(isAuthRoleAdmin())
-                                <form method="POST" action="{{ route('adminOwnAccountDetailsUpdate') }}">
-                            @elseif(isAuthRoleSuperUser())
-                                <form method="POST" action="{{ route('superuserOwnAccountDetailsUpdate') }}">
-                            @elseif(isAuthRoleUser())
-                                <form method="POST" action="{{ route('userOwnAccountDetailsUpdate') }}">
-                            @elseif(isAuthRoleEndUser())
-                                <form method="POST" action="{{ route('enduserOwnAccountDetailsUpdate') }}">
-                            @endif
+                            <form method="POST" action="{{ route('dashboardProfileUpdate') }}">
                                 @csrf
                                 <div class="row">
                                     <div class="form-group col-lg-6">
@@ -91,15 +83,7 @@
                             <h4 class="card-title">{{ __('Profile Image') }}</h4>
                         </div>
                         <div class="card-body">
-                            @if(isAuthRoleAdmin())
-                            <form method="POST" action="{{ route('adminOwnAccountProfileImageUpload') }}" enctype="multipart/form-data">
-                            @elseif(isAuthRoleSuperUser())
-                            <form method="POST" action="{{ route('superuserOwnAccountProfileImageUpload') }}" enctype="multipart/form-data">
-                            @elseif(isAuthRoleUser())
-                            <form method="POST" action="{{ route('userOwnAccountProfileImageUpload') }}" enctype="multipart/form-data">
-                            @elseif(isAuthRoleEndUser())
-                            <form method="POST" action="{{ route('enduserOwnAccountProfileImageUpload') }}" enctype="multipart/form-data">
-                            @endif
+                            <form method="POST" action="{{ route('dashboardProfileImageUpdate') }}" enctype="multipart/form-data">
                                 @csrf
                                 <div class="row">
                                     <div class="form-group col-md-6">
@@ -131,15 +115,7 @@
                             <h4 class="card-title">{{ __('Change Password') }}</h4>
                         </div>
                         <div class="card-body">
-                            @if(isAuthRoleAdmin())
-                            <form method="POST" action="{{ route('adminOwnAccountPasswordChange') }}">
-                            @elseif(isAuthRoleSuperUser())
-                            <form method="POST" action="{{ route('superuserOwnAccountPasswordChange') }}">
-                            @elseif(isAuthRoleUser())
-                            <form method="POST" action="{{ route('userOwnAccountPasswordChange') }}">
-                            @elseif(isAuthRoleEndUser())
-                            <form method="POST" action="{{ route('enduserOwnAccountPasswordChange') }}">
-                            @endif
+                            <form method="POST" action="{{ route('dashboardProfileChangePassword') }}">
                                 @csrf
                                 <div class="form-group">
                                     <label class="control-label" for="password">{{ __('Current Password') }}</label>

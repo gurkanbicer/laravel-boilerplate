@@ -11,11 +11,13 @@ class User
     public function handle(Request $request, Closure $next)
     {
         if (Auth::check()) {
-            if (Auth::user()->role == "user") {
+            if (havePermission('user')) {
                 return $next($request);
             }
-        }
 
-        return redirect()->route('dashboardRedirect')->with('error', "Only user can access!");
+            return redirect()->route('dashboardIndex')->withErrors([__("You don't have authorized for this request.")]);
+        } else {
+            return redirect()->route('login');
+        }
     }
 }

@@ -3,7 +3,7 @@
     <section class="section">
         <div class="section-header">
             <h1 class="flex-grow-1">{{ __('Edit User: :name', ['name' => $user->first_name . ' ' . $user->last_name]) }}</h1>
-            <a class="btn btn-primary text-white ml-3" href="{{ route('adminListUsers') }}"><i class="fas fa-angle-double-left"></i> {{ __('Back to users') }}</a>
+            <a class="btn btn-primary text-white ml-3" href="{{ route('dashboardUserList') }}"><i class="fas fa-angle-double-left"></i> {{ __('Back to users') }}</a>
         </div>
         <div class="section-body">
             <div class="row">
@@ -13,7 +13,7 @@
                             <h4 class="card-title">{{ __('Basic Information') }}</h4>
                         </div>
                         <div class="card-body">
-                            <form method="POST" action="{{ route('adminUpdateUser') }}">
+                            <form method="POST" action="{{ route('dashboardUserUpdate') }}">
                                 <input type="hidden" name="id" value="{{ $user->id }}">
                                 @csrf
                                 <div class="row">
@@ -114,7 +114,7 @@
                             <h4 class="card-title">{{ __('Change Password') }}</h4>
                         </div>
                         <div class="card-body">
-                            <form method="POST" action="{{ route('adminChangeUserPassword') }}">
+                            <form method="POST" action="{{ route('dashboardUserUpdatePassword') }}">
                                 @csrf
                                 <input type="hidden" name="id" value="{{ $user->id }}">
                                 <div class="form-group">
@@ -143,7 +143,7 @@
                             <h4 class="card-title">{{ __('Profile Image') }}</h4>
                         </div>
                         <div class="card-body">
-                            <form method="POST" action="{{ route('adminChangeUserProfileImage') }}" enctype="multipart/form-data">
+                            <form method="POST" action="{{ route('dashboardUserUpdateProfileImage') }}" enctype="multipart/form-data">
                                 @csrf
                                 <input type="hidden" name="id" value="{{ $user->id }}">
                                 <div class="row">
@@ -177,7 +177,7 @@
                                 <h4 class="card-title">{{ __('Delete Account') }}</h4>
                             </div>
                             <div class="card-body">
-                                <form method="POST" action="{{ route('adminDeleteUser') }}" id="accountDeleteForm">
+                                <form method="POST" action="{{ route('dashboardUserDelete') }}" id="accountDeleteForm">
                                     @csrf
                                     <input type="hidden" name="id" value="{{ $user->id }}">
                                     <div class="form-group">

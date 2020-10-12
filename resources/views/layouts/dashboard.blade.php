@@ -40,28 +40,9 @@
                         </div>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
-                        @switch(getAuthenticatedUserRole())
-                            @case('admin')
-                            <a href="{{ route('adminOwnAccountDetails') }}" class="dropdown-item has-icon">
-                                <i class="far fa-user"></i> {{ __('Profile') }}
-                            </a>
-                            @break
-                            @case('superuser')
-                            <a href="{{ route('superuserOwnAccountDetails') }}" class="dropdown-item has-icon">
-                                <i class="far fa-user"></i> {{ __('Profile') }}
-                            </a>
-                            @break
-                            @case('user')
-                            <a href="{{ route('userOwnAccountDetails') }}" class="dropdown-item has-icon">
-                                <i class="far fa-user"></i> {{ __('Profile') }}
-                            </a>
-                            @break
-                            @case('enduser')
-                            <a href="{{ route('enduserOwnAccountDetails') }}" class="dropdown-item has-icon">
-                                <i class="far fa-user"></i> {{ __('Profile') }}
-                            </a>
-                            @break
-                        @endswitch
+                        <a href="{{ route('dashboardProfileEdit') }}" class="dropdown-item has-icon">
+                            <i class="far fa-user"></i> {{ __('Profile') }}
+                        </a>
                         <div class="dropdown-divider"></div>
                         <a href="{{ route('logout') }}" class="dropdown-item has-icon text-danger" onclick="logout('logout-form');">
                             <i class="fas fa-sign-out-alt"></i> {{ __('Logout') }}
@@ -76,29 +57,21 @@
         <div class="main-sidebar">
             <aside id="sidebar-wrapper">
                 <div class="sidebar-brand">
-                    <a href="{{ route('dashboardRedirect') }}"><i class="fab fa-laravel text-primary mt-3" style="font-size: 32px;"></i></a>
+                    <a href="{{ route('dashboardIndex') }}"><i class="fab fa-laravel text-primary mt-3" style="font-size: 32px;"></i></a>
                 </div>
                 <div class="sidebar-brand sidebar-brand-sm">
-                    <a href="{{ route('dashboardRedirect') }}"><i class="fab fa-laravel text-primary mt-3" style="font-size: 32px;"></i></a>
+                    <a href="{{ route('dashboardIndex') }}"><i class="fab fa-laravel text-primary mt-3" style="font-size: 32px;"></i></a>
                 </div>
                 <ul class="sidebar-menu">
                     <li class="menu-header">{{ __('Menu') }}</li>
                     <li class="nav-item">
-                        <a href="{{ route('dashboardRedirect') }}"><i class="fas fa-columns"></i><span>{{ __('Dashboard') }}</span></a>
+                        <a href="{{ route('dashboardIndex') }}"><i class="fas fa-columns"></i><span>{{ __('Dashboard') }}</span></a>
                     </li>
-                    @switch(getAuthenticatedUserRole())
-                        @case('admin')
-                        <li class="nav-item @if (\Route::is('adminListUsers')) active @endif ">
-                            <a href="{{ route('adminListUsers') }}"><i class="fas fa-users"></i><span>{{ __('Users') }}</span></a>
+                    @if(havePermission('admin'))
+                        <li class="nav-item @if (\Route::is('dashboardUserList')) active @endif ">
+                            <a href="{{ route('dashboardUserList') }}"><i class="fas fa-users"></i><span>{{ __('Users') }}</span></a>
                         </li>
-                        @break
-                        @case('superuser')
-                        @break
-                        @case('user')
-                        @break
-                        @case('enduser')
-                        @break
-                    @endswitch
+                    @endif
                 </ul>
                 <div class="mt-4 mb-4 p-3 hide-sidebar-mini">
                     <a href="{{ route('guestIndex') }}" class="btn btn-primary btn-lg btn-block btn-icon-split">

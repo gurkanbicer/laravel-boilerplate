@@ -2,27 +2,56 @@
 
 use Illuminate\Support\Facades\Auth;
 
-function getAuthenticatedUserRole()
+function getUserRole()
 {
     return (Auth::check()) ? Auth::user()->role : false;
 }
 
-function isAuthRoleAdmin()
+function isRoleAdmin()
 {
-    return (getAuthenticatedUserRole() == 'admin') ? true : false;
+    return (getUserRole() == 'admin') ? true : false;
 }
 
-function isAuthRoleSuperUser()
+function isRoleSuperUser()
 {
-    return (getAuthenticatedUserRole() == 'superuser') ? true : false;
+    return (getUserRole() == 'superuser') ? true : false;
 }
 
-function isAuthRoleUser()
+function isRoleUser()
 {
-    return (getAuthenticatedUserRole() == 'user') ? true : false;
+    return (getUserRole() == 'user') ? true : false;
 }
 
-function isAuthRoleEndUser()
+function isRoleEndUser()
 {
-    return (getAuthenticatedUserRole() == 'enduser') ? true : false;
+    return (getUserRole() == 'enduser') ? true : false;
+}
+
+function getRolePermissions($role)
+{
+    return config()->get('roles')[$role]['contains'];
+}
+
+function havePermission($minimumRole)
+{
+    $role = getUserRole();
+    if ($role !== false) {
+        if (in_array($minimumRole, getRolePermissions($role))) {
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
+}
+
+function getUserRoleName()
+{
+    $role = getUserRole();
+    if ($role !== false) {
+        return config()->get('roles')[$role]['alias'];
+    } else {
+        return null;
+    }
 }

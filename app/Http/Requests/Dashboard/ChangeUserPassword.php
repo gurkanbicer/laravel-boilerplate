@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Http\Requests\Admin;
+namespace App\Http\Requests\Dashboard;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use App\Models\User;
 
-class ChangePassword extends FormRequest
+class ChangeUserPassword extends FormRequest
 {
-
     public function authorize()
     {
-        return (isAuthRoleAdmin()) ? true : false;
+        return true;
     }
 
     public function rules()
@@ -19,7 +19,7 @@ class ChangePassword extends FormRequest
             'id' => [
                 'required',
                 'numeric',
-                Rule::exists('users')
+                Rule::exists(User::class)
             ],
             'new_password' => [
                 'required',

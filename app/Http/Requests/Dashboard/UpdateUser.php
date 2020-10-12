@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Http\Requests\Admin;
+namespace App\Http\Requests\Dashboard;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use App\Models\User;
 
 class UpdateUser extends FormRequest
 {
     public function authorize()
     {
-        return (isAuthRoleAdmin()) ? true : false;
+        return true;
     }
 
     public function rules()
@@ -18,7 +19,7 @@ class UpdateUser extends FormRequest
             'id' => [
                 'required',
                 'numeric',
-                Rule::exists('users')
+                Rule::exists(User::class)
             ],
             'first_name' => [
                 'required',
@@ -43,19 +44,19 @@ class UpdateUser extends FormRequest
                 'string',
                 'min:3',
                 'max:255',
-                Rule::unique('users')->ignore($this->request->get('id')),
+                Rule::unique(User::class)->ignore($this->request->get('id')),
             ],
             'email' => [
                 'required',
                 'string',
                 'email',
                 'max:255',
-                Rule::unique('users')->ignore($this->request->get('id')),
+                Rule::unique(User::class)->ignore($this->request->get('id')),
             ],
             'status' => [
                 'required',
                 'string',
-                Rule::in(['active', 'suspended', 'disabled']),
+                Rule::in(['active', 'suspended', 'closed']),
             ],
             'role' => [
                 'required',

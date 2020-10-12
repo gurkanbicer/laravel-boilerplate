@@ -85,7 +85,7 @@
                                             {{ \Carbon\Carbon::parse($user->updated_at)->format('d/m/Y H:i') }}
                                         </td>
                                         <td class="text-center align-middle">
-                                            <a class="btn btn-primary btn-sm" href="{{ route('adminGetUser', ['id' => $user->id]) }}">{{ __('Edit User') }}</a>
+                                            <a class="btn btn-primary btn-sm" href="{{ route('dashboardUserEdit', ['id' => $user->id]) }}">{{ __('Edit User') }}</a>
                                         </td>
                                     </tr>
                                 @endforeach

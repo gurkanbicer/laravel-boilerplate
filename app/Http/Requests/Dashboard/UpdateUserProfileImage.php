@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Requests\Common;
+namespace App\Http\Requests\Dashboard;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use App\Models\User;
 
-class UploadOwnAccountProfileImage extends FormRequest
+class UpdateUserProfileImage extends FormRequest
 {
     public function authorize()
     {
@@ -15,7 +16,13 @@ class UploadOwnAccountProfileImage extends FormRequest
     public function rules()
     {
         return [
+            'id' => [
+                'required',
+                'numeric',
+                Rule::exists(User::class)
+            ],
             'profile_image' => [
+                'required',
                 'file',
                 'max:1024',
                 'mimes:jpg,jpeg,png,svg',
